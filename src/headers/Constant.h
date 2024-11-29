@@ -10,7 +10,7 @@
 
 // Constants
 
-const char *shapefilePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/QGIS/roads/roads.shp";
+const char *shapefilePath = "D:/Projects/DSA Lab/signalFireWall/QGIS/roads/roads.shp";
 double minX = -0.364612;
 double minY = -446.329;
 double maxX = 600.438;
