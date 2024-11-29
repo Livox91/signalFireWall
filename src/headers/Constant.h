@@ -12,7 +12,7 @@
 
 const char *shapefilePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/QGIS/roads/roads.shp";
 double minX = -0.364612;
-double minY = -446.329;
+double minY = -546.329;
 double maxX = 600.438;
 double maxY = -1.48159;
 
@@ -24,4 +24,6 @@ float scaleX = WIN_WIDTH / (maxX - minX);
 float scaleY = WIN_HEIGHT / (maxY - minY);
 float scale = std::min(scaleX, scaleY);
 float offsetX = -minX * scale;
-float offsetY = -minY * scale;
+float offsetY = 800;
+
+const char *MapImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/assets/map.png";
