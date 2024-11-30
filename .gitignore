@@ -24,3 +24,5 @@ build/
 .dart_tool/
 .packages
 pubspec.lock
+
+src/headers/Constants.h
