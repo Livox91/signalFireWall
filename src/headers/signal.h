@@ -37,8 +37,7 @@ public:
             SignalSprite.setTexture(SignalTextureRed);
             State = false;
         }
-        SignalSprite.setTexture(SignalTextureRed);
-        SignalSprite.setScale(0.3, 0.3);
+        SignalSprite.setScale(0.25, 0.25);
         next = NULL;
     } // parameterized constructor
 
@@ -87,4 +86,9 @@ public:
     {
         return SignalSprite;
     } // getSprite
+
+    bool getSignalState()
+    {
+        return State;
+    } // getState
 };

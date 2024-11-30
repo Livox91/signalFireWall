@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Map.h"
-#include "Junction.h"
+#include "TrafficManager.h"
 
 class Window
 {
@@ -10,8 +10,9 @@ public:
     sf::Texture mapTexture;
     sf::Sprite mapSprite;
     Map *map;
-
-    Window(Map &map) : map(&map)
+    TrafficManager *trafficManager;
+    sf::Clock clock;
+    Window(Map &map, TrafficManager &trafficManager) : map(&map), trafficManager(&trafficManager)
     {
         window = new sf::RenderWindow(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT - 200), "Project");
         if (!mapTexture.loadFromFile(MapImagePath))
@@ -30,14 +31,20 @@ public:
             if (event.type == sf::Event::Closed)
                 window->close();
         }
-
+        if (clock.getElapsedTime().asSeconds() >= 5.0f)
+        {
+            trafficManager->CycleSignals();
+            clock.restart();
+        }
         window->clear();
         for (const auto &line : map->lines)
         {
 
             window->draw(line);
         }
+
         window->draw(mapSprite);
+        trafficManager->drawJunction(window);
         window->display();
     }
 };
