@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Map.h"
+#include "Junction.h"
 
 class Window
 {
@@ -9,9 +10,10 @@ public:
     sf::Texture mapTexture;
     sf::Sprite mapSprite;
     Map *map;
+
     Window(Map &map) : map(&map)
     {
-        window = new sf::RenderWindow(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Project");
+        window = new sf::RenderWindow(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT - 200), "Project");
         if (!mapTexture.loadFromFile(MapImagePath))
         {
             std::cerr << "Failed to load map image!" << std::endl;
