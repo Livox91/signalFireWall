@@ -25,4 +25,4 @@ build/
 .packages
 pubspec.lock
 
-src/headers/Constants.h
+./src/headers/Constant.h
