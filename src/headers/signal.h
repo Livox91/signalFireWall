@@ -1,6 +1,4 @@
-
 #include "Constant.h"
-
 
 class Signal{
     bool State;
@@ -25,7 +23,7 @@ class Signal{
     }//constructor
     Signal(int id){
         SignalId=id;
-        if(SignalId=1){
+        if(SignalId==1){
             State=true;
             SignalSprite.setTexture(SignalTextureGreen);
         }
@@ -67,5 +65,6 @@ class Signal{
         State=false;
         SignalSprite.setTexture(SignalTextureRed);
     }//onOff
+
 
 }
