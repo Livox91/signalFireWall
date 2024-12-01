@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 
 // Constants
 

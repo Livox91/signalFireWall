@@ -7,21 +7,14 @@ class Window
 
 public:
     sf::RenderWindow *window;
-    sf::Texture mapTexture;
-    sf::Sprite mapSprite;
     Map *map;
     TrafficManager *trafficManager;
     sf::Clock clock;
     Window(Map &map, TrafficManager &trafficManager) : map(&map), trafficManager(&trafficManager)
     {
         window = new sf::RenderWindow(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT - 200), "Project");
-        if (!mapTexture.loadFromFile(MapImagePath))
-        {
-            std::cerr << "Failed to load map image!" << std::endl;
-        }
-        mapSprite.setTexture(mapTexture);
-        mapSprite.setPosition(0, 0);
-        mapSprite.setScale(1.3318, 1.3318);
+        this->map->setlines();
+        this->map->print();
     }
     void draw()
     {
@@ -37,13 +30,13 @@ public:
             clock.restart();
         }
         window->clear();
-        for (const auto &line : map->lines)
+        for (const auto &line : map->getLines())
         {
 
             window->draw(line);
         }
 
-        window->draw(mapSprite);
+        window->draw(map->getSprite());
         trafficManager->drawJunction(window);
         window->display();
     }
