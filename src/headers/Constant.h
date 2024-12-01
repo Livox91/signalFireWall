@@ -3,6 +3,7 @@
 #include <gdal.h>
 #include <gdal_priv.h>
 #include <ogr_api.h>
+#include "ogrsf_frmts.h"
 #include <ogr_geometry.h>
 #include <SFML/Graphics.hpp>
 #include <vector>

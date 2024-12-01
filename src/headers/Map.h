@@ -1,5 +1,6 @@
 #include "Constant.h"
-#include "Node.h"
+
+#include "Graph.h"
 
 class Map
 {
@@ -9,8 +10,9 @@ class Map
     sf::Texture mapTexture;
     OGRLayerH layer;
     std::vector<Node *> nodes;
-    std::vector<Edge> edges;
+    std::vector<Edge *> edges;
     std::unordered_map<std::string, Node *> nodeMap;
+    Graph *graph;
     int j;
 
 public:
@@ -38,6 +40,7 @@ public:
         mapSprite.setTexture(mapTexture);
         mapSprite.setPosition(0, 0);
         mapSprite.setScale(1.3318, 1.3318);
+        graph = new Graph();
         j = 1;
     }
 
@@ -58,13 +61,6 @@ public:
                 OGRLineString *line = (OGRLineString *)geometry;
 
                 sf::VertexArray lineStrip(sf::LineStrip, line->getNumPoints());
-
-                std::string key = getKey(line->getX(0), line->getY(0));
-                if (nodeMap.find(key) == nodeMap.end())
-                {
-                    nodes.push_back(new Node(line->getX(0), line->getY(0), j++));
-                    nodeMap[key] = nodes.back();
-                }
                 for (int i = 0; i < line->getNumPoints(); ++i)
                 {
 
@@ -86,12 +82,66 @@ public:
     {
         return mapSprite;
     }
+    std::vector<Node *> getNodes()
+    {
+        return nodes;
+    }
+    void setEdges()
+    {
+        Node *start;
+        Node *end;
+        double weight;
+        OGR_L_ResetReading(layer);
+        while ((feature = OGR_L_GetNextFeature(layer)) != NULL)
+        {
+            OGRGeometryH geometry = OGR_F_GetGeometryRef(feature);
+            if (geometry != NULL && wkbFlatten(OGR_G_GetGeometryType(geometry)) == wkbLineString)
+            {
+                OGRLineString *line = (OGRLineString *)geometry;
+                weight = OGR_G_Length(geometry);
+                std::string key = getKey(line->getX(0), line->getY(0));
+                start = new Node(line->getX(0), line->getY(0), j++);
+                end = new Node(line->getX(line->getNumPoints() - 1), line->getY(line->getNumPoints() - 1), j++);
+                if (nodeMap.find(key) == nodeMap.end())
+                {
+                    nodes.push_back(start);
+                    nodeMap[key] = nodes.back();
+                }
+                else
+                {
+                    start = nodeMap[key];
+                }
+                key = getKey(line->getX(line->getNumPoints() - 1), line->getY(line->getNumPoints() - 1));
+                if (nodeMap.find(key) == nodeMap.end())
+                {
+                    nodes.push_back(end);
+                    nodeMap[key] = nodes.back();
+                }
+                else
+                {
+                    end = nodeMap[key];
+                }
+                edges.push_back(new Edge(start, end, weight));
+            }
+            OGR_F_Destroy(feature);
+        }
+    }
+    std::vector<Edge *> getEdges()
+    {
+        return edges;
+    }
     void print()
     {
-        for (const auto &node : nodes)
-        {
-            std::cout << node->x << " " << node->y << " " << node->id << std::endl;
-        }
+        graph->printGraph();
+    }
+    void setGraph()
+    {
+        graph->addNodes(nodes);
+        graph->addEdge(edges);
+    }
+    std::vector<int> ShortestPath(int srcID, int DestID)
+    {
+        return graph->dijkstra(srcID, DestID);
     }
     ~Map()
     {
