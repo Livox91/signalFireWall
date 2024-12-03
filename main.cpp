@@ -4,10 +4,10 @@
 
 int main()
 {
-    TrafficManager trafficManager;
     Map map;
+    TrafficManager trafficManager(map);
 
-    Window screen(map, trafficManager);
+    Window screen(trafficManager);
 
     while (screen.window->isOpen())
     {

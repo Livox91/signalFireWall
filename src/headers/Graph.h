@@ -8,8 +8,8 @@
 class Graph
 {
 private:
-    std::unordered_map<int, Node *> nodes; // Store nodes by ID
-    std::vector<Edge *> edges;             // List of all edges
+    std::unordered_map<int, Node *> nodes;
+    std::vector<Edge *> edges;
     std::unordered_map<int, std::vector<Edge *>> adjacencyList;
 
 public:
@@ -17,7 +17,7 @@ public:
     {
         adjacencyList = calculateAdjacencyList(edges);
     }
-    // Add a node
+
     void addNodes(std::vector<Node *> nodes)
     {
         for (const auto &node : nodes)
@@ -26,7 +26,6 @@ public:
         }
     }
 
-    // Add an edge
     void addEdge(std::vector<Edge *> edges)
     {
         for (const auto &edge : edges)
@@ -34,6 +33,7 @@ public:
             this->edges.push_back(edge);
         }
     }
+
     std::unordered_map<int, std::vector<Edge *>> calculateAdjacencyList(const std::vector<Edge *> &edges)
     {
         std::unordered_map<int, std::vector<Edge *>> adjacencyList;
@@ -46,6 +46,7 @@ public:
 
         return adjacencyList;
     }
+
     std::vector<int> dijkstra(int srcId, int destId)
     {
         int nodeCount = nodes.size();
@@ -103,7 +104,7 @@ public:
         std::reverse(path.begin(), path.end());
         return path;
     }
-    // Debug: Print all nodes and edges
+
     void printGraph()
     {
         std::cout << "Nodes:" << std::endl;
