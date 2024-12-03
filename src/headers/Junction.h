@@ -86,7 +86,7 @@ public:
         Edge *temp = head;
         for (int i = 1; i < n; i++)
         {
-            if (temp->signalId == n)
+            if (temp->signal->getSignalId() == n)
             {
                 temp->signal->onPriority();
             }

@@ -24,21 +24,21 @@ public:
     Node *end;
     float weight;
     bool hasSignal;
-    int signalId;
+    int JunctionId;
 
-    Edge(Node *start, Node *end, float weight, bool hasSignal = false, int signalId = -1)
+    Edge(Node *start, Node *end, float weight, bool hasSignal = false, int JunctionId = -1)
     {
         this->start = start;
         this->end = end;
         this->weight = weight;
         this->hasSignal = hasSignal;
-        this->signalId = signalId;
+        this->JunctionId = JunctionId;
         this->signal = NULL;
         this->next = NULL;
     }
     void setSignal()
     {
-        Signal *signal = new Signal(this->signalId);
+        Signal *signal = new Signal(this->JunctionId);
         this->signal = signal;
     }
 };

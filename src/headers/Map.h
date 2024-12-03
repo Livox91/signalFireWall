@@ -109,7 +109,7 @@ public:
                     hasSignal = OGR_F_GetFieldAsInteger(feature, signalFieldIndex) != 0; // Convert to bool
                 }
 
-                if (JunctionIdFieldIndex >= 0 && !OGR_F_IsFieldNull(feature, signalIdFieldIndex))
+                if (JunctionIdFieldIndex >= 0 && !OGR_F_IsFieldNull(feature, JunctionIdFieldIndex))
                 {
                     JunctionID = OGR_F_GetFieldAsInteger(feature, JunctionIdFieldIndex);
                 }
@@ -152,7 +152,7 @@ public:
         {
             for (const auto &edge : edges)
             {
-                if (edge->hasSignal && edge->JunctionID == i)
+                if (edge->hasSignal && edge->JunctionId == i)
                 {
                     edge->setSignal();
                     tempEdge.push_back(edge);
@@ -162,65 +162,30 @@ public:
             switch (i)
             {
             case 1:
-                std::cout << "Signal ID: " << i << " tempEdge size: " << tempEdge.size() << std::endl;
-                for (const auto temp : tempEdge)
-                {
-                    std::cout << temp->JunctionID << std::endl;
-                }
                 junctions.push_back(new Junction(4, 89.11, 89.11, 'a', tempEdge));
                 tempEdge.clear();
                 break;
             case 2:
-                std::cout << "Signal ID: " << i << " tempEdge size: " << tempEdge.size() << std::endl;
-                for (const auto temp : tempEdge)
-                {
-                    std::cout << temp->JunctionID << std::endl;
-                }
                 junctions.push_back(new Junction(3, 526.67, 89.11, 'b', tempEdge));
                 tempEdge.clear();
                 break;
             case 3:
-                std::cout << "Signal ID: " << i << " tempEdge size: " << tempEdge.size() << std::endl;
-                for (const auto temp : tempEdge)
-                {
-                    std::cout << temp->JunctionID << std::endl;
-                }
                 junctions.push_back(new Junction(3, 708, 89.11, 'c', tempEdge));
                 tempEdge.clear();
                 break;
             case 4:
-                std::cout << "Signal ID: " << i << " tempEdge size: " << tempEdge.size() << std::endl;
-                for (const auto temp : tempEdge)
-                {
-                    std::cout << temp->JunctionID << std::endl;
-                }
                 junctions.push_back(new Junction(4, 89.11, 270.59, 'a', tempEdge));
                 tempEdge.clear();
                 break;
             case 5:
-                std::cout << "Signal ID: " << i << " tempEdge size: " << tempEdge.size() << std::endl;
-                for (const auto temp : tempEdge)
-                {
-                    std::cout << temp->JunctionID << std::endl;
-                }
                 junctions.push_back(new Junction(3, 343.14, 270.59, 'b', tempEdge));
                 tempEdge.clear();
                 break;
             case 6:
-                std::cout << "Signal ID: " << i << " tempEdge size: " << tempEdge.size() << std::endl;
-                for (const auto temp : tempEdge)
-                {
-                    std::cout << temp->JunctionID << std::endl;
-                }
                 junctions.push_back(new Junction(3, 708, 393.68, 'c', tempEdge));
                 tempEdge.clear();
                 break;
             case 7:
-                std::cout << "Signal ID: " << i << " tempEdge size: " << tempEdge.size() << std::endl;
-                for (const auto temp : tempEdge)
-                {
-                    std::cout << temp->JunctionID << std::endl;
-                }
                 junctions.push_back(new Junction(3, 708, 578.55, 'd', tempEdge));
                 tempEdge.clear();
                 break;
@@ -228,9 +193,6 @@ public:
                 break;
             }
         }
-    }
-    void linkEgdesToJunctions()
-    {
     }
 
     void setGraph()
