@@ -2,15 +2,15 @@
 #include "Map.h"
 class TrafficManager
 {
-    Map *map;
-
 public:
+    Map *map;
     TrafficManager(Map &map) : map(&map)
     {
         map.setlines();
         map.setNodesAndEdges();
         map.setJunctions();
         map.setGraph();
+        map.PrintGraph();
     }
 
     void drawMap(sf::RenderWindow *window)
@@ -34,5 +34,9 @@ public:
         {
             junction->RotateSignals();
         }
+    }
+    std::vector<int> ShortestPath(int srcID, int destID)
+    {
+        return map->ShortestPath(srcID, destID);
     }
 };

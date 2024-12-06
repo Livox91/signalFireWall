@@ -1,6 +1,7 @@
 #include "Constant.h"
-#include "Node.h"
-class Junction
+#include "Edge.h"
+
+class Junction // Also Known As Circular Linked List of Edges
 {
     float x, y;
     char junctionType;

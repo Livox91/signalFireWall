@@ -1,44 +1,42 @@
 #include "Constant.h"
-#include "Signal.h"
-#pragma once
+
+#ifndef NODE_H
+#define NODE_H
 class Node
 {
 public:
+    Node *next;
+    Node *prev;
     float x;
     float y;
     int id;
     Node(float x, float y, int id)
     {
-        this->x = x;
-        this->y = y;
+        this->next = NULL;
+        this->prev = NULL;
+        this->x = x * scale + offsetX;
+        this->y = WIN_HEIGHT - (y * scale + offsetY);
         this->id = id;
     }
-};
-
-class Edge
-{
-public:
-    Signal *signal;
-    Edge *next;
-    Node *start;
-    Node *end;
-    float weight;
-    bool hasSignal;
-    int JunctionId;
-
-    Edge(Node *start, Node *end, float weight, bool hasSignal = false, int JunctionId = -1)
+    void setNext(Node *next)
     {
-        this->start = start;
-        this->end = end;
-        this->weight = weight;
-        this->hasSignal = hasSignal;
-        this->JunctionId = JunctionId;
-        this->signal = NULL;
-        this->next = NULL;
+        this->next = next;
     }
-    void setSignal()
+
+    void setPrev(Node *prev)
     {
-        Signal *signal = new Signal(this->JunctionId);
-        this->signal = signal;
+        this->prev = prev;
+    }
+
+    Node *getNext()
+    {
+        return next;
+    }
+
+    Node *getPrev()
+    {
+        return prev;
     }
 };
+
+#endif

@@ -1,15 +1,14 @@
 #pragma once
-
+#include <iostream>
+#include <utility>
+#include <vector>
 #include <gdal.h>
 #include <gdal_priv.h>
 #include <ogr_api.h>
 #include "ogrsf_frmts.h"
 #include <ogr_geometry.h>
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include <iostream>
 #include <unordered_map>
-
 // Constants
 
 const char *shapefilePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/QGIS/roads/roads.shp";
@@ -32,3 +31,9 @@ const char *MapImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSyst
 const char *RedImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/assets/red.png";
 const char *YellowImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/assets/yellow.png";
 const char *GreenImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/assets/green.png";
+
+#include "Signal.h"
+#include "Node.h"
+#include "Edge.h"
+#include "List.h"
+#include "Dictionary.h"

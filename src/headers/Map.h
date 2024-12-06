@@ -42,7 +42,6 @@ public:
         mapSprite.setTexture(mapTexture);
         mapSprite.setPosition(0, 0);
         mapSprite.setScale(1.3318, 1.3318);
-        graph = new Graph();
         j = 1;
     }
 
@@ -197,8 +196,9 @@ public:
 
     void setGraph()
     {
-        graph->addNodes(nodes);
-        graph->addEdge(edges);
+        std::cout << "Setting Graph" << std::endl;
+        graph = new Graph(nodes, edges);
+        this->graph->setAdjacencyList();
     }
 
     std::vector<sf::VertexArray> getLines()
@@ -231,6 +231,26 @@ public:
         return graph->dijkstra(srcID, DestID);
     }
 
+    Node *getNearestNode(sf::Vector2f clickPos)
+    {
+        Node *nearestNode = nullptr;
+        float minDistance = 999999999.99;
+        for (const auto &node : nodes)
+        {
+            float distance = std::sqrt(std::pow(node->x - clickPos.x, 2) + std::pow(node->y - clickPos.y, 2));
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestNode = node;
+            }
+        }
+        return nearestNode;
+    }
+
+    void PrintGraph()
+    {
+        graph->printGraph();
+    }
     ~Map()
     {
         GDALClose(dataset);

@@ -1,6 +1,10 @@
 #include "Constant.h"
 
+#ifndef SIGNAL_H
+#define SIGNAL_H
+
 class Signal
+
 {
     bool State;
     int SignalId;
@@ -92,3 +96,5 @@ public:
         return State;
     } // getState
 };
+
+#endif
