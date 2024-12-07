@@ -1,5 +1,11 @@
-#include <SFML/Graphics.hpp>
 #include "TrafficManager.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include "Debouncer.h"
 class Window
 {
@@ -12,7 +18,7 @@ public:
     sf::Clock clock;
     Node *startNode;
     Node *endNode;
-    std::vector<int> shortestPath;
+    std::vector<Node *> shortestPath;
 
     Window(TrafficManager &trafficManager) : trafficManager(&trafficManager)
     {
@@ -50,7 +56,7 @@ public:
                         shortestPath = trafficManager->map->ShortestPath(startNode->id, endNode->id);
                         for (auto &node : shortestPath)
                         {
-                            std::cout << node << " ";
+                            std::cout << node->id << " ";
                         }
                     }
                 }
@@ -69,21 +75,10 @@ public:
 
         for (const auto &node : trafficManager->map->getNodes())
         {
-            sf::CircleShape circle(2);
+            sf::CircleShape circle(3);
             circle.setFillColor(sf::Color::Red);
             circle.setPosition(node->x, node->y);
             window->draw(circle);
-        }
-
-        // draw edges in Blue
-
-        for (const auto &edge : trafficManager->map->getEdges())
-        {
-            sf::Vertex line[] =
-                {
-                    sf::Vertex(sf::Vector2f(edge->start->x, edge->start->y)),
-                    sf::Vertex(sf::Vector2f(edge->end->x, edge->end->y))};
-            window->draw(line, 2, sf::Lines);
         }
 
         window->display();

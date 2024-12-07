@@ -35,7 +35,7 @@ public:
             junction->RotateSignals();
         }
     }
-    std::vector<int> ShortestPath(int srcID, int destID)
+    std::vector<Node *> ShortestPath(int srcID, int destID)
     {
         return map->ShortestPath(srcID, destID);
     }

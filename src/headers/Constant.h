@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <functional>
 #include <utility>
 #include <vector>
 #include <gdal.h>

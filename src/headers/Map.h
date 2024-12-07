@@ -198,7 +198,6 @@ public:
     {
         std::cout << "Setting Graph" << std::endl;
         graph = new Graph(nodes, edges);
-        this->graph->setAdjacencyList();
     }
 
     std::vector<sf::VertexArray> getLines()
@@ -226,9 +225,9 @@ public:
         return junctions;
     }
 
-    std::vector<int> ShortestPath(int srcID, int DestID)
+    std::vector<Node *> ShortestPath(int srcID, int DestID)
     {
-        return graph->dijkstra(srcID, DestID);
+        return graph->bellmanFord(srcID, DestID);
     }
 
     Node *getNearestNode(sf::Vector2f clickPos)
@@ -251,6 +250,7 @@ public:
     {
         graph->printGraph();
     }
+
     ~Map()
     {
         GDALClose(dataset);

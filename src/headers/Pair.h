@@ -9,8 +9,9 @@ class Pair
 public:
     Pair *next;
     Pair *prev;
-    T1 first;
-    T2 second;
+
+    T1 key;
+    T2 value;
 
     Pair()
     {
@@ -20,11 +21,11 @@ public:
 
     T1 getKey()
     {
-        return first;
+        return key;
     }
     T2 getValue()
     {
-        return second;
+        return value;
     }
 
     void setNext(Pair *next)
@@ -47,10 +48,10 @@ public:
         return prev;
     }
 
-    void makePair(T1 first, T2 second)
+    void makePair(T1 key, T2 value)
     {
-        this->first = first;
-        this->second = second;
+        this->key = key;
+        this->value = value;
     }
 };
 

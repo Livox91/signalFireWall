@@ -5,6 +5,7 @@ class Dictionary
 
 public:
     List<Pair<int, List<Node>>> *list;
+
     Dictionary()
     {
         list = new List<Pair<int, List<Node>>>;
@@ -12,32 +13,34 @@ public:
 
     void insert(int key, Node *value)
     {
+        if (key == 2 || value->id == 2)
+            std::cout << "Inserting Value " << value->id << " With Key " << key << std::endl;
+        if (list->size() == 0)
+        {
 
-        for (int i = 0; i < list->size(); ++i)
+            List<Node> nodeList;
+            nodeList.insertNode(value);
+            Pair<int, List<Node>> *pair = new Pair<int, List<Node>>;
+            pair->makePair(key, nodeList);
+
+            list->insertNode(pair);
+        }
+        else
         {
-            Pair<int, List<Node>> *existingPair = list->getNode(i);
-            if (existingPair == nullptr)
+            Pair<int, List<Node>> *ExistingPair = list->search(key);
+            if (ExistingPair == NULL)
             {
-                std::cerr << "Error: Null pair encountered at index " << i << std::endl;
-                continue;
+                List<Node> nodeList;
+                nodeList.insertNode(value);
+                Pair<int, List<Node>> *pair = new Pair<int, List<Node>>;
+                pair->makePair(key, nodeList);
+                list->insertNode(pair);
             }
-            if (existingPair->getKey() == key)
+            else
             {
-                existingPair->getValue().insertNode(value);
-                return;
+                ExistingPair->getValue().insertNode(value);
             }
         }
-        Pair<int, List<Node>> *newPair = new Pair<int, List<Node>>;
-        if (newPair == nullptr)
-        {
-            std::cerr << "Error: Memory allocation for new pair failed." << std::endl;
-            return;
-        }
-        List<Node> nodeList;
-        nodeList.insertNode(value);
-        newPair->makePair(key, nodeList);
-        list->insertNode(newPair);
-        return;
     }
 
     void printDictionary()
@@ -45,13 +48,13 @@ public:
         for (int i = 0; i < list->size(); ++i)
         {
             Pair<int, List<Node>> *pair = list->getNode(i);
-            std::cout << pair->getKey() << " : ";
+            std::cout << "Group " << i << ": ";
+            std::cout << pair->getKey() << ": ";
             List<Node> nodeList = pair->getValue();
-            Node *temp = nodeList.getHead();
-            while (temp != NULL)
+            for (int j = 0; j < nodeList.size(); ++j)
             {
-                std::cout << temp->id << " ";
-                temp = temp->getNext();
+                Node *node = nodeList.getNode(j);
+                std::cout << node->id << " ";
             }
             std::cout << std::endl;
         }

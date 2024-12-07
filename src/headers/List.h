@@ -6,6 +6,7 @@ class List
 
 public:
     T *head;
+
     List()
     {
         this->head = NULL;
@@ -13,6 +14,10 @@ public:
 
     void insertNode(T *Node)
     {
+
+        Node->setNext(NULL);
+        Node->setPrev(NULL);
+
         if (this->head == NULL)
         {
             this->head = Node;
@@ -22,17 +27,6 @@ public:
         else
         {
             T *temp = this->head;
-            T *slow = temp, *fast = temp;
-            while (fast != NULL && fast->getNext() != NULL)
-            {
-                slow = slow->getNext();
-                fast = fast->getNext()->getNext();
-                if (slow == fast)
-                {
-                    std::cerr << "Error: Cycle detected in the linked list!" << std::endl;
-                    return;
-                }
-            }
             while (temp->getNext() != NULL)
             {
                 temp = temp->getNext();
@@ -68,5 +62,19 @@ public:
             temp = temp->getNext();
         }
         return temp;
+    }
+
+    T *search(int id)
+    {
+        T *temp = head;
+        while (temp != NULL)
+        {
+            if (temp->getKey() == id)
+            {
+                return temp;
+            }
+            temp = temp->getNext();
+        }
+        return NULL;
     }
 };
