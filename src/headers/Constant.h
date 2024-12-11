@@ -12,7 +12,7 @@
 #include <unordered_map>
 // Constants
 
-const char *shapefilePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/QGIS/roads/roads.shp";
+const char *shapefilePath = "./assets/roads/roads.shp";
 double minX = -0.364612;
 double minY = -546.329;
 double maxX = 600.438;
@@ -28,10 +28,10 @@ float scale = std::min(scaleX, scaleY);
 float offsetX = -minX * scale;
 float offsetY = 800;
 
-const char *MapImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/assets/map.png";
-const char *RedImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/assets/red.png";
-const char *YellowImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/assets/yellow.png";
-const char *GreenImagePath = "C:/Users/HP/Documents/Projects/TrafficManagementSystem/assets/green.png";
+const char *MapImagePath = "./assets/map.png";
+const char *RedImagePath = "./assets/red.png";
+const char *YellowImagePath = "./assets/yellow.png";
+const char *GreenImagePath = "./assets/green.png";
 
 #include "Signal.h"
 #include "Node.h"

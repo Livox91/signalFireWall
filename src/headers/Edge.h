@@ -11,9 +11,10 @@ public:
     Node *end;
     float weight;
     bool hasSignal;
+    char Direction;
     int JunctionId;
 
-    Edge(Node *start, Node *end, float weight, bool hasSignal = false, int JunctionId = -1)
+    Edge(Node *start, Node *end, float weight, bool hasSignal = false, int JunctionId = -1, char Direction = 'a')
     {
         this->start = start;
         this->end = end;
@@ -21,11 +22,12 @@ public:
         this->hasSignal = hasSignal;
         this->JunctionId = JunctionId;
         this->signal = NULL;
+        this->Direction = Direction;
         this->next = NULL;
     }
-    void setSignal()
+    void setSignal(int id)
     {
-        Signal *signal = new Signal(this->JunctionId);
+        Signal *signal = new Signal(id);
         this->signal = signal;
     }
 };

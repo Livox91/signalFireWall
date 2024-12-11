@@ -64,7 +64,6 @@ public:
                 sf::VertexArray lineStrip(sf::LineStrip, line->getNumPoints());
                 for (int i = 0; i < line->getNumPoints(); ++i)
                 {
-
                     lineStrip[i].position = sf::Vector2f(
                         (line->getX(i) * scale + offsetX),
                         WIN_HEIGHT - (line->getY(i) * scale + offsetY));
@@ -83,6 +82,7 @@ public:
         double weight;
         bool hasSignal;
         int JunctionID;
+        const char *Direction;
 
         OGR_L_ResetReading(layer);
         while ((feature = OGR_L_GetNextFeature(layer)) != NULL)
@@ -93,15 +93,17 @@ public:
                 OGRLineString *line = (OGRLineString *)geometry;
 
                 weight = OGR_G_Length(geometry);
-                const char *signalFieldName = "hasSignal";      // Boolean field
-                const char *JunctionIdFieldName = "JunctionID"; // Integer field
+                const char *signalFieldName = "hasSignal";
+                const char *JunctionIdFieldName = "JunctionID";
+                const char *DirectionFieldName = "Direction";
 
                 // Retrieve field indices
                 int signalFieldIndex = OGR_F_GetFieldIndex(feature, signalFieldName);
                 int JunctionIdFieldIndex = OGR_F_GetFieldIndex(feature, JunctionIdFieldName);
+                int DirectionFieldIndex = OGR_F_GetFieldIndex(feature, DirectionFieldName);
 
-                bool hasSignal = false;
-                int signalId = -1;
+                hasSignal = false;
+                JunctionID = -1;
 
                 if (signalFieldIndex >= 0 && !OGR_F_IsFieldNull(feature, signalFieldIndex))
                 {
@@ -111,6 +113,11 @@ public:
                 if (JunctionIdFieldIndex >= 0 && !OGR_F_IsFieldNull(feature, JunctionIdFieldIndex))
                 {
                     JunctionID = OGR_F_GetFieldAsInteger(feature, JunctionIdFieldIndex);
+                }
+
+                if (DirectionFieldIndex)
+                {
+                    Direction = OGR_F_GetFieldAsString(feature, DirectionFieldIndex);
                 }
 
                 std::string key = getKey(line->getX(0), line->getY(0));
@@ -137,7 +144,7 @@ public:
                 {
                     end = nodeMap[key];
                 }
-                edges.push_back(new Edge(start, end, weight, hasSignal, JunctionID));
+                edges.push_back(new Edge(start, end, weight, hasSignal, JunctionID, Direction[0]));
             }
             OGR_F_Destroy(feature);
         }
@@ -146,14 +153,12 @@ public:
     void setJunctions()
     {
         std::vector<Edge *> tempEdge;
-
         for (int i = 1; i <= 7; i++)
         {
             for (const auto &edge : edges)
             {
                 if (edge->hasSignal && edge->JunctionId == i)
                 {
-                    edge->setSignal();
                     tempEdge.push_back(edge);
                 }
             }
@@ -161,36 +166,41 @@ public:
             switch (i)
             {
             case 1:
-                junctions.push_back(new Junction(4, 89.11, 89.11, 'a', tempEdge));
+                junctions.push_back(new Junction(4, 89.11, 89.11, 'a', tempEdge, i));
                 tempEdge.clear();
                 break;
             case 2:
-                junctions.push_back(new Junction(3, 526.67, 89.11, 'b', tempEdge));
+                junctions.push_back(new Junction(3, 526.67, 89.11, 'b', tempEdge, i));
                 tempEdge.clear();
                 break;
             case 3:
-                junctions.push_back(new Junction(3, 708, 89.11, 'c', tempEdge));
+                junctions.push_back(new Junction(3, 708, 89.11, 'c', tempEdge, i));
                 tempEdge.clear();
                 break;
             case 4:
-                junctions.push_back(new Junction(4, 89.11, 270.59, 'a', tempEdge));
+                junctions.push_back(new Junction(4, 89.11, 270.59, 'a', tempEdge, i));
                 tempEdge.clear();
                 break;
             case 5:
-                junctions.push_back(new Junction(3, 343.14, 270.59, 'b', tempEdge));
+                junctions.push_back(new Junction(3, 343.14, 270.59, 'b', tempEdge, i));
                 tempEdge.clear();
                 break;
             case 6:
-                junctions.push_back(new Junction(3, 708, 393.68, 'c', tempEdge));
+                junctions.push_back(new Junction(3, 708, 393.68, 'c', tempEdge, i));
                 tempEdge.clear();
                 break;
             case 7:
-                junctions.push_back(new Junction(3, 708, 578.55, 'd', tempEdge));
+                junctions.push_back(new Junction(3, 708, 578.55, 'd', tempEdge, i));
                 tempEdge.clear();
                 break;
             default:
+                tempEdge.clear();
                 break;
             }
+        }
+        for (const auto &junction : junctions)
+        {
+            junction->setSignalPostion();
         }
     }
 
@@ -246,9 +256,46 @@ public:
         return nearestNode;
     }
 
-    void PrintGraph()
+    Edge *findEdge(Node *start, Node *end)
     {
-        graph->printGraph();
+        for (const auto &edge : edges)
+        {
+            if (edge->start == start && edge->end == end)
+            {
+                return edge;
+            }
+        }
+        return NULL;
+    }
+
+    void resetSignals()
+    {
+        for (const auto &junction : junctions)
+        {
+            junction->resetSignals();
+        }
+    }
+
+    void setPriority(Node *start, Node *end)
+    {
+        Edge *edge = findEdge(start, end);
+
+        int JunctionId = edge->JunctionId;
+        for (const auto &junction : junctions)
+        {
+            if (junction->getId() == JunctionId)
+            {
+                junction->setPrioritySignal(edge);
+            }
+        }
+    }
+
+    void drawJunctions(sf::RenderWindow *window)
+    {
+        for (const auto &junction : junctions)
+        {
+            junction->drawSignals(window);
+        }
     }
 
     ~Map()

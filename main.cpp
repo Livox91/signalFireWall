@@ -1,4 +1,3 @@
-
 #include "src/headers/Constant.h"
 #include "src/headers/Window.h"
 
@@ -13,5 +12,6 @@ int main()
     {
         screen.draw();
     }
+
     return 0;
 }

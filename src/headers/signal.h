@@ -82,6 +82,7 @@ public:
 
     void onOff()
     {
+
         State = false;
         SignalSprite.setTexture(SignalTextureRed);
     } // onOff

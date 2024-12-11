@@ -22,8 +22,10 @@ public:
 
     Window(TrafficManager &trafficManager) : trafficManager(&trafficManager)
     {
-        window = new sf::RenderWindow(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT - 200), "Project");
+        window = new sf::RenderWindow(sf::VideoMode(WIN_WIDTH + 10, WIN_HEIGHT - 150), "Project");
         debouncer = new MouseDebouncer(200);
+        startNode = NULL;
+        endNode = NULL;
     }
 
     void draw()
@@ -46,6 +48,7 @@ public:
                     std::cout << "End Node: " << endNode->id << std::endl;
                 }
             }
+
             if (event.type == sf::Event::KeyPressed)
             {
                 if (event.key.code == sf::Keyboard::Space)
@@ -53,30 +56,44 @@ public:
                     std::cout << "Shortest Path: ";
                     if (startNode != NULL && endNode != NULL)
                     {
-                        shortestPath = trafficManager->map->ShortestPath(startNode->id, endNode->id);
-                        for (auto &node : shortestPath)
+                        shortestPath = trafficManager->ShortestPath(startNode->id, endNode->id);
+                        for (int i = 0; i < shortestPath.size() - 1; i++)
                         {
-                            std::cout << node->id << " ";
+                            trafficManager->map->setPriority(shortestPath[i], shortestPath[i + 1]);
                         }
                     }
                 }
             }
+
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Enter)
+                {
+                    startNode = NULL;
+                    endNode = NULL;
+                    shortestPath.clear();
+                    trafficManager->map->resetSignals();
+                }
+            }
+
             if (event.type == sf::Event::Closed)
                 window->close();
         }
-        if (clock.getElapsedTime().asSeconds() >= 5.0f)
+        if (clock.getElapsedTime().asSeconds() >= 5.0f && startNode == NULL && endNode == NULL)
         {
             trafficManager->CycleSignals();
             clock.restart();
         }
+
         window->clear();
 
-        // trafficManager->drawMap(window);
+        if (shortestPath.size() > 0)
+            trafficManager->drawShortestPath(window);
 
-        for (const auto &node : trafficManager->map->getNodes())
+        for (auto &node : trafficManager->map->getNodes())
         {
-            sf::CircleShape circle(3);
-            circle.setFillColor(sf::Color::Red);
+            sf::CircleShape circle(5);
+            circle.setFillColor(sf::Color::Green);
             circle.setPosition(node->x, node->y);
             window->draw(circle);
         }
