@@ -1,6 +1,4 @@
 #include "Constant.h"
-#include <queue>
-#include <unordered_map>
 
 class Graph
 {
@@ -16,8 +14,17 @@ public:
         this->edges = edges;
         adjacencyList = new Dictionary();
     }
+    void setAdjacencyList()
+    {
 
-    std::vector<Node *> bellmanFord(int srcI, int destI)
+        for (const auto &edge : edges)
+        {
+            adjacencyList->insert(edge->start->id, edge->start);
+            adjacencyList->insert(edge->start->id, edge->end);
+        }
+    }
+
+    std::vector<Node *> calShortestPath(int srcI, int destI)
     {
         Node *src = nullptr;
         Node *dest = nullptr;
@@ -78,5 +85,10 @@ public:
         }
 
         return path;
+    }
+
+    void printAdjacencyList()
+    {
+        adjacencyList->printDictionary();
     }
 };

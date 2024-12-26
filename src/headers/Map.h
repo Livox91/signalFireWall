@@ -208,6 +208,8 @@ public:
     {
         std::cout << "Setting Graph" << std::endl;
         graph = new Graph(nodes, edges);
+        graph->setAdjacencyList();
+        graph->printAdjacencyList();
     }
 
     std::vector<sf::VertexArray> getLines()
@@ -237,7 +239,7 @@ public:
 
     std::vector<Node *> ShortestPath(int srcID, int DestID)
     {
-        return graph->bellmanFord(srcID, DestID);
+        return graph->calShortestPath(srcID, DestID);
     }
 
     Node *getNearestNode(sf::Vector2f clickPos)

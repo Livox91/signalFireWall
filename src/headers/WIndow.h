@@ -1,11 +1,5 @@
 #include "TrafficManager.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics.hpp>
 #include "Debouncer.h"
 class Window
 {
@@ -62,6 +56,10 @@ public:
                             trafficManager->map->setPriority(shortestPath[i], shortestPath[i + 1]);
                         }
                     }
+                    else
+                    {
+                        std::cout << "Select Start and End Nodes" << std::endl;
+                    }
                 }
             }
 
@@ -87,16 +85,17 @@ public:
 
         window->clear();
 
+        trafficManager->drawMap(window);
         if (shortestPath.size() > 0)
             trafficManager->drawShortestPath(window);
 
-        for (auto &node : trafficManager->map->getNodes())
-        {
-            sf::CircleShape circle(5);
-            circle.setFillColor(sf::Color::Green);
-            circle.setPosition(node->x, node->y);
-            window->draw(circle);
-        }
+        // for (auto &node : trafficManager->map->getNodes())
+        // {
+        //     sf::CircleShape circle(5);
+        //     circle.setFillColor(sf::Color::Green);
+        //     circle.setPosition(node->x, node->y);
+        //     window->draw(circle);
+        // }
 
         window->display();
     }
